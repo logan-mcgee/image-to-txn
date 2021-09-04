@@ -2,8 +2,7 @@ fx_version 'bodacious'
 games {'gta5'}
 
 files {
-  'img.html',
-  '*.png'
+  'img.html'
 }
 
 ui_page 'img.html'
