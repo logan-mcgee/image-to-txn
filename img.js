@@ -33,3 +33,5 @@ on('__cfx_nui:recvImage', (data, cb) => {
   if (callback) callback()
   delete waiting[id];
 });
+
+exports('AddImage', AddImage);
