@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ImageFetcher</title>
+</head>
+<body>
+  <canvas id="canvas" style="display: none;"></canvas>
+</body>
+<script>
+  /**
+   * @type {HTMLCanvasElement} canvas
+   * @type {CanvasRenderingContext2D} ctx
+  */
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+
+  async function getImageData(url) {
+    const image = new Image();
+    image.src = url;
+    return new Promise((resolve, reject) => {
+      image.onload = () => {
+        canvas.width = image.width;
+        canvas.height = image.height;
+        ctx.drawImage(image, 0, 0);
+        resolve(ctx.getImageData(0, 0, image.width, image.height));
+      }
+    })
+  }
+
+  async function sendImageBitmap(url, callbackId) {
+    const imageData = await getImageData(url);
+    for (let i = 0; i < imageData.data.length; i += 4) {
+      //? fix order of pixels
+
+      const r = imageData.data[i];
+      const g = imageData.data[i + 1];
+      const b = imageData.data[i + 2];
+      const a = imageData.data[i + 3];
+
+      imageData.data[i]     = b;
+      imageData.data[i + 1] = g;
+      imageData.data[i + 2] = r;
+      imageData.data[i + 3] = a;
+    }
+    
+    const response = await fetch(`https://${GetParentResourceName()}/recvImage`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        imgData: Array.from(imageData.data),
+        id: callbackId,
+        width: imageData.width,
+        height: imageData.height
+      })
+    });
+  }
+
+  window.addEventListener('message', (event) => {
+    const { data } = event;
+    if (data.type === 'getimg') {
+      sendImageBitmap(data.url, data.id);
+    }
+  });
+
+</script>
+</html>
