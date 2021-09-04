@@ -1,6 +1,8 @@
 # image-to-txn
 Uses NUI to fetch an image then create a runtime texture
 
+do note: this will not work on any urls which do not allow cors, so please be aware this will break if that is the case.
+
 simple example:
 
 ```js
