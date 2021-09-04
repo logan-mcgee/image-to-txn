@@ -3,7 +3,7 @@ Uses NUI to fetch an image then create a runtime texture
 
 do note: this will not work on any urls which do not allow cors, so please be aware this will break if that is the case.
 
-simple examples:
+simple examples (not how id reccomend it to be used, but hey, use your brain and im sure youll realise the better way):
 
 ```js
 let isReady = false
