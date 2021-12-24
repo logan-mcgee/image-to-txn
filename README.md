@@ -6,28 +6,24 @@ do note: this will not work on any urls which do not allow cors, so please be aw
 simple examples (not how id reccomend it to be used, but hey, use your brain and im sure youll realise the better way):
 
 ```js
-let isReady = false
-const txd = CreateRuntimeTxd('test_txd2');
-AddImage('https://via.placeholder.com/350x150', txd, 'test_txn3', () => isReady = true)
+const txd = CreateRuntimeTxd("example_txd");
+const rt = CreateRuntimeTexture(txd, "cool_stuff", 350, 150)
 
-setTick(() => {
-  if (!isReady) return;
-  DrawSprite('test_txd2', 'test_txn3', 0.5, 0.5, 0.5, 0.5, 0.0, 255, 255, 255, 255);
+AddImage("https://via.placeholder.com/350x150", rt, () => {
+  setTick(() => {
+    DrawSprite("example_txd", "cool_stuff", 0.5, 0.5, 0.5, 0.5, 0.0, 255, 255, 255, 255);
+  })
 })
 ```
 
 
 ```lua
-local isReady = false
-local txd = CreateRuntimeTxd('test_txd2')
-AddImage('https://via.placeholder.com/350x150', txd, 'test_txn3', function()
-  isReady = true
-end)
-
-while true do
-  Wait(0)
-  if isReady then
-    DrawSprite('test_txd2', 'test_txn3', 0.5, 0.5, 0.5, 0.5, 0.0, 255, 255, 255, 255)
+local txd = CreateRuntimeTxd("example_txd")
+local rt = CreateRuntimeTexture(txd, "cool_stuff", 350, 150)
+AddImage("https://via.placeholder.com/350x150", rt, function()
+  while true do
+    Wait(0)
+    DrawSprite("example_txd", "cool_stuff", 0.5, 0.5, 0.5, 0.5, 0.0, 255, 255, 255, 255)
   end
-end
+end)
 ```
