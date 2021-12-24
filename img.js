@@ -9,17 +9,17 @@ function AddImage(url, runtimeTex, cb) {
   };
 
   SendNuiMessage(JSON.stringify({
-    type: 'getimg',
+    type: "getimg",
     id,
     url
   }))
 }
 
-RegisterNuiCallbackType('recvImage')
-on('__cfx_nui:recvImage', (data, cb) => {
-  cb({ got: 'it' })
+RegisterNuiCallbackType("recvImage")
+on("__cfx_nui:recvImage", (data, cb) => {
+  cb({ got: "it" })
 
-  const { id, imgData, width, height } = data;
+  const { id, imgData } = data;
   const { runtimeTex, cb: callback } = waiting[id];
 
   const uintData = new Uint8Array(imgData);
@@ -29,4 +29,4 @@ on('__cfx_nui:recvImage', (data, cb) => {
   delete waiting[id];
 });
 
-exports('AddImage', AddImage);
+exports("AddImage", AddImage);
